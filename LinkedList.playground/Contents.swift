@@ -34,6 +34,55 @@ public class LinkedList<T: Equatable> {
         } //end while
     } //end function
     
+    //add generic nodes at a specified index
+    func addLinkAtIndex(key: T, index: Int) {
+        //establish the head node
+        if (head.key == nil) {
+            head.key = key;
+            return;
+        }
+        
+        //establish the trailer, current and new items
+        var current: LLNode<T>? = head
+        var trailer: LLNode<T>?
+        var listIndex: Int = 0
+        
+        //iterate through the list to find the insertion point
+        while (current != nil) {
+            if (index == listIndex) {
+                var childToUse: LLNode = LLNode<T>()
+                
+                //create the new node
+                childToUse.key = key;
+                
+                //connect the node infront of the current node
+                childToUse.next = current
+                childToUse.previous = trailer
+                
+                //use optional binding for ading the trailer
+                if let linktrailer = trailer {
+                    linktrailer.next = childToUse
+                    childToUse.previous = linktrailer
+                }
+                
+                //point new node to the current / previous
+                current!.previous = childToUse
+                
+                //replace the head node if required
+                if (index == 0) {
+                    head = childToUse
+                }
+                
+                break
+            } //end if
+            
+            //iterate through to the next item
+            trailer = current
+            current = current?.next
+            listIndex += 1
+        } //end while
+    }
+        
     //remove a link at a specific index
     func removeLinkAtIndex(index: Int) {
         var current: LLNode<T>? = head
